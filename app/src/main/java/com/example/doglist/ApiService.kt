@@ -8,4 +8,5 @@ interface ApiService {
 
     @GET
     suspend fun getDogsByBreeds(@Url url:String):Response<DogsResponse>
+
 }

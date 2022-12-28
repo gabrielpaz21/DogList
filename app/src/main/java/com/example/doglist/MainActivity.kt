@@ -10,6 +10,7 @@ import com.example.doglist.databinding.ActivityMainBinding
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import okhttp3.OkHttpClient
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -39,6 +40,11 @@ class MainActivity : AppCompatActivity(), OnQueryTextListener {
         .Builder()
         .baseUrl("https://dog.ceo/api/breed/")
         .addConverterFactory(GsonConverterFactory.create())
+        .client(getClient())
+        .build()
+
+    private fun getClient(): OkHttpClient = OkHttpClient.Builder()
+        .addInterceptor(HeaderInterceptor())
         .build()
 
     private fun searchByName(query: String) {
@@ -62,7 +68,7 @@ class MainActivity : AppCompatActivity(), OnQueryTextListener {
 
     private fun hideKeyboard() {
         val imn = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
-        imn.hideSoftInputFromWindow(binding.viewRoot.windowToken,0)
+        imn.hideSoftInputFromWindow(binding.viewRoot.windowToken, 0)
     }
 
     private fun showError() {
